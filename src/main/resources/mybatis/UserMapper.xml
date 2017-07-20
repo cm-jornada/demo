@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="springboot.demo.mapper.UserMapper">
+
+	<resultMap id="ResultMap" type="springboot.demo.dmo.User">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="EXTEND_FIELD" property="extendField" jdbcType="VARCHAR" />
+		<result column="ENABLE" property="enable" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"
+			javaType="java.sql.Timestamp" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"
+			javaType="java.sql.Timestamp" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		u.ID,u.USER_NAME,u.PASSWORD,u.PHONE,u.EMAIL,u.EXTEND_FIELD,u.ENABLE,u.CREATE_TIME,u.UPDATE_TIME
+	</sql>
+	
+	<insert id="insert" parameterType="springboot.demo.dmo.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into TB_USER
+		(ID,ENABLE,USER_NAME,PASSWORD,PHONE,EMAIL,EXTEND_FIELD)
+		values(#{id},#{enable},#{userName},#{password},#{phone},#{email},#{extendField})
+	</insert>
+
+	<select id="find"  resultMap="ResultMap" parameterType="springboot.demo.dmo.User">
+		select 
+		<include refid="Base_Column_List" />
+		from TB_USER u
+		<where>
+			<if test="userName != null and userName != ''">
+   				 <![CDATA[And USER_NAME =#{userName} ]]>
+			</if>
+			<if test="phone != null and phone != ''">
+   				 <![CDATA[And PHONE =#{phone} ]]>
+			</if>
+			<if test="enable != null and enable != ''">
+   				 <![CDATA[And ENABLE =#{enable} ]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByUserName" parameterType="java.lang.String" resultMap="ResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from TB_USER u
+		WHERE USER_NAME=#{userName} and ENABLE='1'
+	</select>
+	
+	<select id="findById" parameterType="java.lang.String" resultMap="ResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from TB_USER u WHERE id=#{id}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from TB_USER where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="springboot.demo.dmo.User">
+		update TB_USER 
+		<set>
+			<if test="password != null and password != '' ">
+				PASSWORD = #{password},
+			</if>
+			<if test="phone != null and phone != '' ">
+				PHONE = #{phone},
+			</if>
+			<if test="email != null and email != '' ">
+				EMAIL = #{email},
+			</if>
+			<if test="enable != null and enable != '' ">
+				ENABLE = #{enable},
+			</if>
+			<if test="extendField != null and extendField != '' ">
+				EXTEND_FIELD = #{extendField},
+			</if>
+			UPDATE_TIME = NOW()
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
