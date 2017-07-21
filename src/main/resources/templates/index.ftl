@@ -21,8 +21,8 @@
 					<tr>
 						<td>${user.userName}</td>
 						<td>${user.enable}</td>
-						<td>${user.phone}</td>
-						<td>${user.email}</td>
+						<td>${user.phone!}</td>
+						<td>${user.email!}</td>
 						<td>${user.updateTime}</td>
 						<td>
 							<a href="/user/maintain/${user.id}/view">查看</a>

@@ -2,4 +2,4 @@
 
 git clone https://github.com/cm-jornada/demo.git
 
-git checkout orm
+git checkout security

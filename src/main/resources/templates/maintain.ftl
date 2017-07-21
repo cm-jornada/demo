@@ -30,9 +30,9 @@
 							</tr>
 							<tr>
 								<td>手机号</td>
-								<td><input type="text" name="phone" value="${user.phone}"/></td>
+								<td><input type="text" name="phone" value="${user.phone!}"/></td>
 								<td>邮箱</td>
-								<td><input type="text" name="email" value="${user.email}"/></td>
+								<td><input type="text" name="email" value="${user.email!}"/></td>
 							</tr>
 							<tr>
 								<td colspan=4><input type="button" onclick="formSubmit('edit')" value="保存"/></td>
@@ -58,9 +58,9 @@
 							</tr>
 							<tr>
 								<td>手机号</td>
-								<td>${user.phone}</td>
+								<td>${user.phone!}</td>
 								<td>邮箱</td>
-								<td>${user.email}</td>
+								<td>${user.email!}</td>
 							</tr>
 						</#if>
 					<#else>

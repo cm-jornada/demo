@@ -15,9 +15,41 @@
 		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"
 			javaType="java.sql.Timestamp" />
 	</resultMap>
+	
+	<resultMap id="RoleResultMap" type="springboot.demo.dmo.Role">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />   
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />   
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />  
+		<result column="R_CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"
+		javaType="java.sql.Timestamp" />
+		<result column="R_UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"
+		javaType="java.sql.Timestamp" /> 
+	</resultMap>
+	
+	<resultMap id="ResultMapWithRole" type="springboot.demo.dmo.User">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="EXTEND_FIELD" property="extendField" jdbcType="VARCHAR" />
+		<result column="ENABLE" property="enable" jdbcType="VARCHAR" />
+		<result column="U_CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"
+			javaType="java.sql.Timestamp" />
+		<result column="U_UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"
+			javaType="java.sql.Timestamp" />
+			
+		<collection property="roleList" resultMap="RoleResultMap"/>    
+	</resultMap>
 
 	<sql id="Base_Column_List">
 		u.ID,u.USER_NAME,u.PASSWORD,u.PHONE,u.EMAIL,u.EXTEND_FIELD,u.ENABLE,u.CREATE_TIME,u.UPDATE_TIME
+	</sql>
+	
+	<sql id="USER_WITH_ROLE_Column_List">
+		u.ID U_ID,u.USER_NAME,u.PASSWORD,u.PHONE,u.EMAIL,u.EXTEND_FIELD,u.ENABLE,u.CREATE_TIME U_CREATE_TIME,u.UPDATE_TIME U_UPDATE_TIME,
+		r.ID R_ID,r.NAME,r.DESCRIPTION,r.STATUS,r.CREATE_TIME R_CREATE_TIME,r.UPDATE_TIME R_UPDATE_TIME
 	</sql>
 	
 	<insert id="insert" parameterType="springboot.demo.dmo.User"
@@ -44,11 +76,12 @@
 		</where>
 	</select>
 	
-	<select id="findByUserName" parameterType="java.lang.String" resultMap="ResultMap">
+	<select id="findByUserName" parameterType="java.lang.String" resultMap="ResultMapWithRole">
 		select 
-		<include refid="Base_Column_List" />
-		from TB_USER u
-		WHERE USER_NAME=#{userName} and ENABLE='1'
+		<include refid="USER_WITH_ROLE_Column_List" />
+		from TB_USER u,TB_USER_ROLE ur,TB_ROLE r
+		WHERE u.ID=ur.USER_ID and ur.ROLE_ID = r.ID
+		and USER_NAME=#{userName} and ENABLE='1'
 	</select>
 	
 	<select id="findById" parameterType="java.lang.String" resultMap="ResultMap">

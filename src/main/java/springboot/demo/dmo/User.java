@@ -1,6 +1,7 @@
 package springboot.demo.dmo;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private String id;
@@ -12,6 +13,7 @@ public class User {
     private String extendField;// json格式扩展字段
     private Date createTime;// 创建时间
     private Date updateTime;// 更新时间
+    private List<Role> roleList;// 角色列表
     /**
      * @return the id
      */
@@ -120,5 +122,17 @@ public class User {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+	/**
+	 * @return the roleList
+	 */
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+	/**
+	 * @param roleList the roleList to set
+	 */
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
+	}
     
 }
